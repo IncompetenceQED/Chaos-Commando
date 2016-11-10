@@ -29,6 +29,8 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
+/ProjectSettings/ProjectVersion.txt
+
 # =========================
 # Operating System Files
 # =========================
@@ -79,3 +81,5 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+ProjectSettings/ProjectVersion.txt
+ProjectSettings/ProjectVersion.txt
