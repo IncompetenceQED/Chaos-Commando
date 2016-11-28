@@ -41,7 +41,7 @@ public class CameraController : MonoBehaviour {
 		yAxis = initialYAxis;
 		offset = initialOffset;
 		lookPosition = startingLookPos;
-		gameController = GameObject.FindObjectOfType<GameController> ();
+		gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
 	}
 	
 	// Update is called once per frame
@@ -98,7 +98,23 @@ public class CameraController : MonoBehaviour {
 	}
 
 	private void clickOn(Vector3 mousePosition) {
-
+		RaycastHit hit;
+		Ray click = Camera.main.ScreenPointToRay (Input.mousePosition);
+		bool didRaycastHit;
+		if (gameController.currentState == GameController.State.SelectingGround) {
+			didRaycastHit = Physics.Raycast (click, out hit, 100, groundMask);
+		} else {
+			didRaycastHit = Physics.Raycast (click, out hit, 100, groundMask | clickableMask);
+		}
+		if (didRaycastHit) {
+			GameObject hitObject = hit.collider.gameObject;
+			if (hitObject.CompareTag ("Unit")) {
+				gameController.selectUnit (hitObject);
+			} else if (hitObject.CompareTag ("Ground")) {
+				gameController.selectSquare (Mathf.RoundToInt (hit.point.x),
+											 Mathf.RoundToInt (hit.point.z));
+			}
+		}
 	}
 
 	private void positionCamera() {
